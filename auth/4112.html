@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" class="glue-flexbox">
   <head>
-    <title>AIP-3272: iOS APIs</title>
+    <title>AIP-4112: Default Credentials From Google Virtual Machines</title>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
@@ -190,57 +190,33 @@
     </li>
     <li class="nav-item nav-item-header">AIPs</li>
     <li class="nav-item">
-      <a href="/3201">
-        <span class="aip-number">3201</span>
-        Projects and Apps
+      <a href="/4110">
+        <span class="aip-number">4110</span>
+        Application Default Credentials
       </a>
     </li>
     <li class="nav-item">
-      <a href="/3260">
-        <span class="aip-number">3260</span>
-        Firebase CLI
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="/3270">
-        <span class="aip-number">3270</span>
-        JavaScript APIs
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="/3271">
-        <span class="aip-number">3271</span>
-        Android APIs
+      <a href="/4111">
+        <span class="aip-number">4111</span>
+        Self-signed JWT-based Access Token
       </a>
     </li>
     <li class="nav-item nav-item-active">
-      <a href="/3272">
-        <span class="aip-number">3272</span>
-        iOS APIs
+      <a href="/4112">
+        <span class="aip-number">4112</span>
+        Default Credentials From Google Virtual Machines
       </a>
     </li>
     <li class="nav-item">
-      <a href="/3273">
-        <span class="aip-number">3273</span>
-        C++ APIs
+      <a href="/4113">
+        <span class="aip-number">4113</span>
+        gcloud CLI Integration
       </a>
     </li>
     <li class="nav-item">
-      <a href="/3274">
-        <span class="aip-number">3274</span>
-        .NET APIs
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="/3275">
-        <span class="aip-number">3275</span>
-        Python APIs
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="/3276">
-        <span class="aip-number">3276</span>
-        Go APIs
+      <a href="/4114">
+        <span class="aip-number">4114</span>
+        Device Certificate Authentication via Mutual TLS
       </a>
     </li>
     </ul>
@@ -249,19 +225,24 @@
           
 <aside id="aip-sidebar" class="docs-component-sidebar">
   <table id="aip-summary">
-    <tr><th colspan="2">iOS APIs</th></tr>
-    <tr><td>Number</td><td>3272</td></tr>
-    <tr><td>Permalink</td><td><a href="https://google.aip.dev/firebase/3272">google.aip.dev/firebase/3272</a></td></tr>
-    <tr><td>Scope</td><td>Firebase</td></tr>
-    <tr><td>State</td><td>Draft</td></tr>
-    <tr><td>Created</td><td>2020-06-10</td></tr>
-    <tr><td>Updated</td><td>2020-06-10</td></tr>
+    <tr><th colspan="2">Default Credentials From Google Virtual Machines</th></tr>
+    <tr><td>Number</td><td>4112</td></tr>
+    <tr><td>Permalink</td><td><a href="https://google.aip.dev/auth/4112">google.aip.dev/auth/4112</a></td></tr>
+    <tr><td>Scope</td><td>Auth</td></tr>
+    <tr><td>State</td><td>Approved</td></tr>
+    <tr><td>Created</td><td>2020-08-13</td></tr>
+    <tr><td>Updated</td><td>2020-08-13</td></tr>
   </table>
 
   <section id="aip-toc" class="docs-component-sidebar-toc">
     <div class="toc"><span class="toctitle">Contents</span><ul>
-<li><a href="#guidance">Guidance</a></li>
-<li><a href="#changelog">Changelog</a></li>
+<li><a href="#guidance">Guidance</a><ul>
+<li><a href="#application-default-credentials">Application Default Credentials</a></li>
+<li><a href="#google-virtual-machine-environments">Google Virtual Machine Environments</a></li>
+<li><a href="#compute-engine-or-equivalent-runtime">Compute Engine or equivalent Runtime</a></li>
+<li><a href="#google-app-engine-standard-10-runtime">Google App Engine Standard 1.0 Runtime</a></li>
+</ul>
+</li>
 </ul>
 </div>
 
@@ -270,8 +251,8 @@
   <section class="docs-component-sidebar-actions">
     <ul>
       <li><a href="https://github.com/aip-dev/google.aip.dev/issues/">File Bug</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/firebase/3272.md">View source</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/firebase/3272.md">Edit this page</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/auth/4112.md">View source</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/auth/4112.md">Edit this page</a></li>
     </ul>
   </section>
 </aside>
@@ -289,26 +270,61 @@
       </li>
       
       <li class="glue-breadcrumbs__item" aria-level="2">
-        <a class="glue-breadcrumbs__link" href="/firebase">
-          Firebase AIPs
+        <a class="glue-breadcrumbs__link" href="/auth">
+          Auth AIPs
         </a>
       </li>
       
       <li class="glue-breadcrumbs__item glue-breadcrumbs__item--active"
           aria-level="3">
-        iOS APIs
+        Default Credentials From Google Virtual Machines
       </li>
     </ol>
   </nav>
 </section>
-  <p id="aip-state-banner" class="callout warning">
-  This AIP is currently a draft. This means that it is being actively debated
-  and discussed, and it may change in non-trivial ways.
-</p>
-  <h4 class="aip-number">AIP-3272</h4>
-  <h1>iOS APIs</h1>
+  
+  <h4 class="aip-number">AIP-4112</h4>
+  <h1>Default Credentials From Google Virtual Machines</h1>
+<p>If the client runs on Google virtual machine instance such as <a href="https://cloud.google.com/appengine">Google App Engine</a> or <a href="https://cloud.google.com/compute">Compute Engine</a>, the auth library <strong>may</strong> obtain the identity token that is associated with the instance, and use the identity token as the credential to access Google APIs.</p>
+<p><strong>Note:</strong> Because this AIP describes guidance and requirements in a
+language-neutral way, it uses generic terminology which may be imprecise or
+inappropriate in certain languages or environments.</p>
 <h2 id="guidance">Guidance</h2>
-<h2 id="changelog">Changelog</h2>
+<p>This section describes the general guidance of supporting default credentials from Google virtual machine environments.</p>
+<h3 id="application-default-credentials">Application Default Credentials</h3>
+<p>Supporting the default credentials from Google virtual machines is considered as
+a part of the <a href="./4110">application default credential</a>. To understand the overall flow, please read <a href="./4110">AIP-4110</a>.</p>
+<h3 id="google-virtual-machine-environments">Google Virtual Machine Environments</h3>
+<p>There are typically two types of Google virtual machine environments where the auth library should obtain the identity token based on the environment type:</p>
+<ul>
+<li>Google App Engine Standard 1.0</li>
+<li>Compute Engine or equivalent runtime<ul>
+<li>This typically includes Google App Engine Standard 2.0+ and Google App Engine Flex environments.</li>
+</ul>
+</li>
+</ul>
+<p>The auth library <strong>should</strong> depend on the <a href="https://cloud.google.com/appengine/downloads">Google App Engine SDK</a> to detect if the application is running within a Google App Engine environment.</p>
+<p>To detect if the application is running on Compute Engine environment, the auth library <strong>should</strong> depend on the <a href="https://developers.google.com/analytics/devguides/reporting/metadata/v3/libraries">Metadata Service Library</a>.</p>
+<h3 id="compute-engine-or-equivalent-runtime">Compute Engine or equivalent Runtime</h3>
+<p>If the application runs on a Compute Engine instance, the auth library can request the following URL to get an access token associated with instance:</p>
+<div class="highlight language-"><pre><span></span><code>http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token
+</code></pre></div>
+
+<p>In response, the auth library will usually receive a token in the following JSON format:</p>
+<div class="highlight language-json"><pre><span></span><code><span class="p">{</span>
+      <span class="nt">&quot;access_token&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_ACCESS_TOKEN&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;expires_in&quot;</span><span class="p">:</span><span class="mi">3599</span><span class="p">,</span>
+      <span class="nt">&quot;token_type&quot;</span><span class="p">:</span><span class="s2">&quot;Bearer&quot;</span>
+ <span class="p">}</span>
+</code></pre></div>
+
+<p>These access tokens expire after a short period of time. The metadata server caches access tokens until they have 60 seconds of remaining time before they expire.</p>
+<p><strong>Note:</strong> You can use the access token only for scopes that you specified when you created the instance. For example, if the instance has been granted only the https://www.googleapis.com/auth/storage-full scope for Cloud Storage, then it can't use the access token to make a request to BigQuery.</p>
+<h3 id="google-app-engine-standard-10-runtime">Google App Engine Standard 1.0 Runtime</h3>
+<p>If the application runs on a App Engine Standard 1st generation instance, the auth library <strong>should</strong> rely on the <a href="https://cloud.google.com/appengine/downloads">Google App Engine SDK</a> to retrieve the access token. Here is <a href="https://godoc.org/google.golang.org/appengine#AccessToken">one example</a> in Go. Essentially the SDK relies on the underlying App Engine Identity service to generate the token.</p>
+<!-- prettier-ignore-start -->
+
+<!-- prettier-ignore-end -->
   <footer>
   Except as otherwise noted, the content of this page is licensed under the
   <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons

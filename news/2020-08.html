@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" class="glue-flexbox">
   <head>
-    <title>AIP-234: Batch methods: Update</title>
+    <title>Field patterns, redux</title>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
@@ -20,8 +20,6 @@
     </script>
     <script type="text/javascript" src="/assets/js/global.js?v=14f204ca"></script>
     
-<script type="text/javascript" src="/assets/js/proto-syntax.js"></script>
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140054909-1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -166,8 +164,7 @@
     <div class="glue-page">
       
       <main role="main" id="page-content">
-        
-<nav id="aip-nav" class="docs-component-nav">
+        <nav id="aip-nav" class="docs-component-nav">
   <ul class="nav-list">
     <li class="nav-item nav-item-header">AIPs by Scope</li>
     <li class="nav-item">
@@ -519,7 +516,7 @@
         Batch methods: Create
       </a>
     </li>
-    <li class="nav-item nav-item-active">
+    <li class="nav-item">
       <a href="/234">
         <span class="aip-number">234</span>
         Batch methods: Update
@@ -536,23 +533,13 @@
 <section id="jump-content">
           
 <aside id="aip-sidebar" class="docs-component-sidebar">
-  <table id="aip-summary">
-    <tr><th colspan="2">Batch methods: Update</th></tr>
-    <tr><td>Number</td><td>234</td></tr>
-    <tr><td>Permalink</td><td><a href="https://google.aip.dev/234">google.aip.dev/234</a></td></tr>
-    <tr><td>State</td><td>Approved</td></tr>
-    <tr><td>Created</td><td>2019-06-18</td></tr>
-    <tr><td>Updated</td><td>2019-06-18</td></tr>
-  </table>
-
   <section id="aip-toc" class="docs-component-sidebar-toc">
     <div class="toc"><span class="toctitle">Contents</span><ul>
-<li><a href="#guidance">Guidance</a><ul>
-<li><a href="#request-message">Request message</a></li>
-<li><a href="#response-message">Response message</a></li>
+<li><a href="#aips-under-review">AIPs under review</a><ul>
+<li><a href="#aip-147-sensitive-fields">AIP-147: Sensitive fields</a></li>
 </ul>
 </li>
-<li><a href="#changelog">Changelog</a></li>
+<li><a href="#recent-updates">Recent updates</a></li>
 </ul>
 </div>
 
@@ -561,8 +548,8 @@
   <section class="docs-component-sidebar-actions">
     <ul>
       <li><a href="https://github.com/aip-dev/google.aip.dev/issues/">File Bug</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/general/0234.md">View source</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/general/0234.md">Edit this page</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/pages/news/2020-08.md">View source</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/pages/news/2020-08.md">Edit this page</a></li>
     </ul>
   </section>
 </aside>
@@ -579,118 +566,57 @@
         </a>
       </li>
       
-      <li class="glue-breadcrumbs__item" aria-level="2">
-        <a class="glue-breadcrumbs__link" href="/general">
-          General AIPs
-        </a>
-      </li>
-      
       <li class="glue-breadcrumbs__item glue-breadcrumbs__item--active"
           aria-level="3">
-        Batch methods: Update
+        Field patterns, redux
       </li>
     </ol>
   </nav>
 </section>
-  
-  <h4 class="aip-number">AIP-234</h4>
-  <h1>Batch methods: Update</h1>
-<p>Some APIs need to allow users to modify a set of resources in a single
-transaction. A batch update method provides this functionality.</p>
-<h2 id="guidance">Guidance</h2>
-<p>APIs <strong>may</strong> support Batch Update using the following pattern:</p>
-<div class="highlight language-proto"><pre><span></span><code><span class="k">rpc</span> <span class="n">BatchUpdateBooks</span><span class="p">(</span><span class="n">BatchUpdateBooksRequest</span><span class="p">)</span> <span class="k">returns</span> <span class="p">(</span><span class="n">BatchUpdateBooksResponse</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">option</span> <span class="p">(</span><span class="n">google.api.http</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">post</span><span class="o">:</span> <span class="s">&quot;/v1/{parent=publishers/*}/books:batchUpdate&quot;</span>
-    <span class="n">body</span><span class="o">:</span> <span class="s">&quot;*&quot;</span>
-  <span class="p">};</span>
-<span class="p">}</span>
-</code></pre></div>
-
+  <h1>Field patterns, redux</h1>
+<p>Welcome to the fifth edition of the <strong>AIP newsletter</strong>, which is designed to
+keep you up to date about the AIP program, and particular proposals making
+their way through the system. (Our apologies for not publishing a newsletter in
+July.)</p>
+<p>We have one new AIP this month, on sensitive fields. As always, the AIP
+newsletter kicks off what is effectively a "public comment" period: the AIP
+editors are happy with this proposal, but we want to ensure that you are too.
+Assuming feedback is sufficiently positive, we intend to formally approve these
+proposals on Friday, August 28, 2020.</p>
+<h2 id="aips-under-review">AIPs under review</h2>
+<h3 id="aip-147-sensitive-fields">AIP-147: Sensitive fields</h3>
+<blockquote>
+<p>Sometimes APIs need to collect sensitive information such as private
+encryption keys meant to be <em>stored</em> by the underlying service but not
+intended to be <em>read</em> after writing due to the sensitive nature of the data.</p>
+</blockquote>
+<p><a href="../147">Sensitive fields</a> are fields that are stored by a service but, once
+set, not retrievable by the user, such as passwords or private keys. These are
+not particularly common in APIs, and often it is sufficient to set them as
+<code>INPUT_ONLY</code> (as described in AIP-203).</p>
+<p>However, there is a challenge in situations where the service needs to provide
+some kind of indication that a value has been provided, or provide an
+obfuscated value that the original user ought to recognize. This AIP provides a
+standard for each of those situations.</p>
+<p>A special thanks to <a href="https://github.com/mbleigh">Michael Bleigh</a> for writing this AIP.</p>
+<p><strong>Summary:</strong> <a href="../147">AIP-147</a> provides patterns for indicators around sensitive
+fields.</p>
+<p>We are aiming to approve AIP-147 on August 28. If you have feedback, please
+<a href="https://github.com/aip-dev/google.aip.dev/pull/583">leave a comment</a>.</p>
+<h2 id="recent-updates">Recent updates</h2>
+<p>In addition to the new AIPs under review, we have added the following guidance
+to existing AIPs:</p>
 <ul>
-<li>The RPC's name <strong>must</strong> begin with <code>BatchUpdate</code>. The remainder of the RPC
-  name <strong>should</strong> be the plural form of the resource being updated.</li>
-<li>The request and response messages <strong>must</strong> match the RPC name, with
-  <code>-Request</code> and <code>-Response</code> suffixes.<ul>
-<li>However, in the event that the request may take a significant amount of
-  time, the response message <strong>must</strong> be a <code>google.longrunning.Operation</code>
-  which ultimately resolves to the <code>-Response</code> type.</li>
+<li><a href="../135">AIP-135</a>: Add "get" guidance for soft delete.
+  (<a href="https://github.com/aip-dev/google.aip.dev/pull/526">#526</a>)</li>
+<li><a href="../140">AIP-140</a>: Word segments in field names must not begin with a number.
+  (<a href="https://github.com/aip-dev/google.aip.dev/pull/528">#528</a>)</li>
+<li><a href="../151">AIP-151</a>: Add guidance for parallel operations.
+  (<a href="https://github.com/aip-dev/google.aip.dev/pull/535">#535</a>)</li>
+<li><a href="../158">AIP-158</a>: Clarify that <code>page_size</code> is always an opitonal field.
+  (<a href="https://github.com/aip-dev/google.aip.dev/pull/537">#537</a>)</li>
 </ul>
-</li>
-<li>The HTTP verb <strong>must</strong> be <code>POST</code>.</li>
-<li>The HTTP URI <strong>must</strong> end with <code>:batchUpdate</code>.</li>
-<li>The URL path <strong>should</strong> represent the collection for the resource, matching
-  the collection used for simple CRUD operations. If the operation spans
-  parents, a dash (<code>-</code>) <strong>may</strong> be accepted as a wildcard.</li>
-<li>The body clause in the <code>google.api.http</code> annotation <strong>should</strong> be <code>"*"</code>.</li>
-<li>The operation <strong>must</strong> be atomic: it <strong>must</strong> fail for all resources or
-  succeed for all resources (no partial success).<ul>
-<li>If the operation covers multiple locations and at least one location is
-  down, the operation <strong>must</strong> fail.</li>
-</ul>
-</li>
-</ul>
-<h3 id="request-message">Request message</h3>
-<p>The request for a batch update method <strong>should</strong> be specified with the
-following pattern:</p>
-<div class="highlight language-proto"><pre><span></span><code><span class="kd">message</span> <span class="nc">BatchUpdateBooksRequest</span> <span class="p">{</span>
-  <span class="c1">// The parent resource shared by all books being updated.</span>
-  <span class="c1">// Format: publishers/{publisher}</span>
-  <span class="c1">// If this is set, the parent field in the UpdateBookRequest messages</span>
-  <span class="c1">// must either be empty or match this field.</span>
-  <span class="kt">string</span> <span class="na">parent</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 
-  <span class="c1">// The request message specifying the resources to update.</span>
-  <span class="c1">// A maximum of 1000 books can be modified in a batch.</span>
-  <span class="k">repeated</span> <span class="n">UpdateBookRequest</span> <span class="na">requests</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<ul>
-<li>A <code>parent</code> field <strong>should</strong> be included. If a caller sets this field, and the
-  parent collection in the name of any resource being updated does not match,
-  the request <strong>must</strong> fail.<ul>
-<li>This field <strong>should</strong> be required if only 1 parent per request is allowed.</li>
-</ul>
-</li>
-<li>The request message <strong>must</strong> include a repeated field which accepts the
-  request messages specifying the resources to update, as specified for
-  <a href="/134#request-message">standard Update methods</a>. The field <strong>should</strong> be named
-  <code>requests</code>.</li>
-<li>Other fields <strong>may</strong> be "hoisted" from the <a href="/134#request-message">standard Update
-  request</a>, which means that the field can be set at either
-  the batch level or child request level. Similar to <code>parent</code>, if both the
-  batch level and child request level are set for the same field, the values
-  <strong>must</strong> match.<ul>
-<li>The <code>update_mask</code> field is a good candidate for hoisting.</li>
-</ul>
-</li>
-<li>The request message <strong>must not</strong> contain any other required fields, and
-  <strong>should not</strong> contain other optional fields except those described in this
-  or another AIP.</li>
-<li>The comment above the names field <strong>should</strong> document the maximum number of
-  requests allowed.</li>
-</ul>
-<h3 id="response-message">Response message</h3>
-<p>The response for a batch update method <strong>should</strong> be specified with the
-following pattern:</p>
-<div class="highlight language-proto"><pre><span></span><code><span class="kd">message</span> <span class="nc">BatchUpdateBooksResponse</span> <span class="p">{</span>
-  <span class="c1">// Books updated.</span>
-  <span class="k">repeated</span> <span class="n">Book</span> <span class="na">books</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<ul>
-<li>The response message <strong>must</strong> include one repeated field corresponding to the
-  resources that were updated.</li>
-</ul>
-<h2 id="changelog">Changelog</h2>
-<ul>
-<li><strong>2019-09-11</strong>: Fixed the wording about which child field the <code>parent</code> field
-  should match.</li>
-<li><strong>2019-08-01</strong>: Changed the examples from "shelves" to "publishers", to
-  present a better example of resource ownership.</li>
-</ul>
   <footer>
   Except as otherwise noted, the content of this page is licensed under the
   <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons
@@ -699,7 +625,7 @@ following pattern:</p>
   <span class="no-print">For details, see <a href="/licensing">content
   licensing</a>.</span>
 </footer>
-</section>
+  </section>
 
         </section>
       </main>
