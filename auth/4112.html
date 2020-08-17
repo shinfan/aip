@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en-US" class="glue-flexbox">
   <head>
-    <title>AIP-4112: Default Credentials From Google Virtual Machines</title>
+    <title>AIP-4112: Service Account Keys</title>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=d6457ff7">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=d6457ff7">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=609a9a2b">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=609a9a2b">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,7 +18,7 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=d6457ff7"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=609a9a2b"></script>
     
 <script type="text/javascript" src="/assets/js/proto-syntax.js"></script>
 
@@ -204,7 +204,7 @@
     <li class="nav-item nav-item-active">
       <a href="/4112">
         <span class="aip-number">4112</span>
-        Default Credentials From Google Virtual Machines
+        Service Account Keys
       </a>
     </li>
     <li class="nav-item">
@@ -219,13 +219,19 @@
         Device Certificate Authentication via Mutual TLS
       </a>
     </li>
+    <li class="nav-item">
+      <a href="/4115">
+        <span class="aip-number">4115</span>
+        Default Credentials From Google Virtual Machines
+      </a>
+    </li>
     </ul>
 </nav>
 <section id="jump-content">
           
 <aside id="aip-sidebar" class="docs-component-sidebar">
   <table id="aip-summary">
-    <tr><th colspan="2">Default Credentials From Google Virtual Machines</th></tr>
+    <tr><th colspan="2">Service Account Keys</th></tr>
     <tr><td>Number</td><td>4112</td></tr>
     <tr><td>Permalink</td><td><a href="https://google.aip.dev/auth/4112">google.aip.dev/auth/4112</a></td></tr>
     <tr><td>Scope</td><td>Auth</td></tr>
@@ -237,11 +243,8 @@
   <section id="aip-toc" class="docs-component-sidebar-toc">
     <div class="toc"><span class="toctitle">Contents</span><ul>
 <li><a href="#guidance">Guidance</a><ul>
-<li><a href="#application-default-credentials">Application Default Credentials</a></li>
-<li><a href="#google-virtual-machine-environments">Google Virtual Machine Environments</a></li>
-<li><a href="#compute-engine-or-equivalent-runtime">Compute Engine or equivalent Runtime</a></li>
-<li><a href="#google-app-engine-standard-10-runtime">Google App Engine Standard 1.0 Runtime</a></li>
-<li><a href="#token-expiration">Token Expiration</a></li>
+<li><a href="#service-account-key-authentication-using-oauth">Service Account Key Authentication Using OAuth</a></li>
+<li><a href="#expected-behavior">Expected Behavior</a></li>
 </ul>
 </li>
 </ul>
@@ -278,60 +281,94 @@
       
       <li class="glue-breadcrumbs__item glue-breadcrumbs__item--active"
           aria-level="3">
-        Default Credentials From Google Virtual Machines
+        Service Account Keys
       </li>
     </ol>
   </nav>
 </section>
   
   <h4 class="aip-number">AIP-4112</h4>
-  <h1>Default Credentials From Google Virtual Machines</h1>
-<p>If the client runs on Google virtual machine instance such as <a href="https://cloud.google.com/appengine">Google App Engine</a> or <a href="https://cloud.google.com/compute">Compute Engine</a>, the auth library <strong>may</strong> obtain the identity token that is associated with the instance, and use the identity token as the credential to access Google APIs. By using the instance identity, the users no longer to config their credentials explicitly.</p>
+  <h1>Service Account Keys</h1>
+<p>A service account is a special kind of account used by an application or a
+virtual machine (VM) instance, not a person. Applications use service accounts
+to make authorized API calls, authorized as either the service account itself,
+or as G Suite or Cloud Identity users through domain-wide delegation. Service
+accounts are associated with private/public RSA key-pairs that are used for
+authentication, which is the focus of this AIP.</p>
 <p><strong>Note:</strong> Because this AIP describes guidance and requirements in a
 language-neutral way, it uses generic terminology which may be imprecise or
 inappropriate in certain languages or environments.</p>
 <h2 id="guidance">Guidance</h2>
-<p>This section describes the general guidance of supporting default credentials from Google virtual machine environments.</p>
-<h3 id="application-default-credentials">Application Default Credentials</h3>
-<p>Supporting the default credentials from Google virtual machines is considered as
-a part of the <a href="./4110">Application Default Credential</a>. To understand the overall credential flow, please read <a href="./4110">AIP-4110</a>.</p>
-<h3 id="google-virtual-machine-environments">Google Virtual Machine Environments</h3>
-<p>There are typically two types of Google virtual machine environments where the auth library should obtain the identity token based on the environment type:</p>
+<p>This section describes the general guidance of supporting Service Account Key
+authentication using traditional OAuth flow. For Service Account Key
+authentication using self-signed JWT flow, please refer to the <a href="https://google.aip.dev/auth/4111">self-signed
+JWT</a> AIP.</p>
+<h3 id="service-account-key-authentication-using-oauth">Service Account Key Authentication Using OAuth</h3>
+<p>Under the latest <a href="https://google.aip.dev/auth/4110">ADC</a> guidance, when Service Account Key is provided as the
+source credential, we prefer to use the <a href="https://google.aip.dev/auth/4111">self-signed JWT</a> flow by default,
+which does not use the OAuth "scope" argument. Therefore, the client <strong>should</strong>
+choose the OAuth flow over self-signed JWT flow only if the OAuth "scope" is
+explicitly provided to the client.</p>
+<h3 id="expected-behavior">Expected Behavior</h3>
+<p>To support Service Account Key authentication using OAuth flow, the auth
+libraries <strong>must</strong> follow the steps below:</p>
+<p>1.Load the <strong>Service Account ID JSON file</strong> from the file path specified by
+<strong>GOOGLE_APPLICATION_CREDENTIALS</strong> environment variable, or an explicit
+<strong>credentials</strong> file path specified through client options. The JSON file will
+look like below:</p>
+<div class="highlight language-json"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;service_account&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;project_id&quot;</span><span class="p">:</span> <span class="s2">&quot;testproject&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;private_key_id&quot;</span><span class="p">:</span> <span class="s2">&quot;redacted&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;private_key&quot;</span><span class="p">:</span> <span class="s2">&quot;redacted&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;client_email&quot;</span><span class="p">:</span> <span class="s2">&quot;testserviceaccount@test.iam.gserviceaccount.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;client_id&quot;</span><span class="p">:</span> <span class="s2">&quot;113258942105700140798&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;auth_uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://accounts.google.com/o/oauth2/auth&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;token_uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://oauth2.googleapis.com/token&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;auth_provider_x509_cert_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.googleapis.com/oauth2/v1/certs&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;client_x509_cert_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.googleapis.com/robot/v1/metadata/x509/testserviceaccount%40test.iam.gserviceaccount.com&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Note:</strong> A Service Account ID JSON file can be downloaded from <a href="https://console.cloud.google.com/apis/credentials">Google Cloud Console</a>.</p>
+<p>2.Using any standard JWT library, such as one found at <a href="https://jwt.io/#libraries-io">jwt.io</a>, create a
+JWT with a header and claims set like the following example:</p>
+<div class="highlight language-json"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;RS256&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;typ&quot;</span><span class="p">:</span> <span class="s2">&quot;JWT&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;abcdef1234567890&quot;</span>
+<span class="p">}</span>
+<span class="p">{</span>
+  <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;123456-compute@developer.gserviceaccount.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;123456-compute@developer.gserviceaccount.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.googleapis.com/auth/pubsub&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
 <ul>
-<li>Google App Engine Standard 1.0</li>
-<li>Compute Engine or equivalent runtime<ul>
-<li>This typically includes Google App Engine Standard 2.0+ and Google App Engine Flex environments.</li>
-</ul>
+<li>
+<p>For the <code>kid</code> field in the header, specify the service account's private
+key ID. You can find this value in the <strong>private_key_id</strong> field of the
+service account JSON file.</p>
+</li>
+<li>
+<p>For the <code>iss</code> and <code>sub</code> fields, specify the service account's email
+address. You can find this value in the <strong>client_email</strong> field of the
+service account JSON file.</p>
+</li>
+<li>
+<p>For the <code>scope</code> field, specify the <strong>scope</strong> parameter provided by the client.
+Multiple scopes can be specified using single space (" ") as delimiter.</p>
 </li>
 </ul>
-<p>The auth library <strong>should</strong> depend on the <a href="https://cloud.google.com/appengine/downloads">Google App Engine SDK</a> to detect if the application is running within a Google App Engine environment.</p>
-<p>To detect if the application is running on Compute Engine environment, the auth library <strong>should</strong> depend on the <a href="https://developers.google.com/analytics/devguides/reporting/metadata/v3/libraries">Metadata Service Library</a>.</p>
-<h3 id="compute-engine-or-equivalent-runtime">Compute Engine or equivalent Runtime</h3>
-<p>If the application runs on a Compute Engine instance (or equivalent runtime), the auth library can request the following URL to get an access token associated with instance:</p>
-<div class="highlight language-"><pre><span></span><code>http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token
-</code></pre></div>
-
-<p>In response, the auth library will usually receive a token in the following JSON format:</p>
-<div class="highlight language-json"><pre><span></span><code><span class="p">{</span>
-      <span class="nt">&quot;access_token&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_ACCESS_TOKEN&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;expires_in&quot;</span><span class="p">:</span><span class="mi">3599</span><span class="p">,</span>
-      <span class="nt">&quot;token_type&quot;</span><span class="p">:</span><span class="s2">&quot;Bearer&quot;</span>
- <span class="p">}</span>
-</code></pre></div>
-
-<p><strong>Note:</strong> You can use the access token only for scopes that you specified when you created the instance. For example, if the instance has been granted only the https://www.googleapis.com/auth/storage-full scope for Cloud Storage, then it can't use the access token to make a request to BigQuery.</p>
-<h3 id="google-app-engine-standard-10-runtime">Google App Engine Standard 1.0 Runtime</h3>
-<p>If the application runs on a App Engine Standard 1st generation instance, the auth library <strong>should</strong> rely on the <a href="https://cloud.google.com/appengine/downloads">Google App Engine SDK</a> to retrieve the access token. Here is <a href="https://godoc.org/google.golang.org/appengine#AccessToken">one example</a> in Go. Essentially the SDK relies on the underlying App Engine Identity service to generate the token.</p>
-<p>Unlike Compute Engine, the auth library can specify scopes when requesting the token in the App Engine Standard 1.0 runtime.</p>
-<p>Sample code of getting the access token in Go:</p>
-<div class="highlight language-go"><pre><span></span><code><span class="kn">import</span> <span class="s">&quot;google.golang.org/appengine&quot;</span>
-<span class="o">...</span>
-<span class="nx">token</span><span class="p">,</span> <span class="nx">exp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">appengine</span><span class="p">.</span><span class="nx">AccessToken</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">scopes</span><span class="o">...</span><span class="p">)</span>
-<span class="o">...</span>
-</code></pre></div>
-
-<h3 id="token-expiration">Token Expiration</h3>
-<p>The access tokens expire after a short period of time. The auth library <strong>must</strong> get a new token if the existing token expires.</p>
+<p>3.Sign the JWT with RSA-256 using the <strong>private_key</strong> found in the service
+account JSON file. The output will be used as the request payload (a.k.a.
+assertion) for the 2-legged OAuth flow.</p>
+<p>4.Define a parameter "grant_type" as
+"urn:ietf:params:oauth:grant-type:jwt-bearer". Define a parameter "assertion" as
+the payload from step 3.</p>
+<p>5.Make a POST request to the <strong>token_uri</strong> endpoint with the parameters from
+step 4 to obtain an OAuth2 Access Token.</p>
 <!-- prettier-ignore-start -->
 
 <!-- prettier-ignore-end -->
