@@ -8,8 +8,8 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=609a9a2b">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=609a9a2b">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=342c8063">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=342c8063">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,7 +18,7 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=609a9a2b"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=342c8063"></script>
     
 <script type="text/javascript" src="/assets/js/proto-syntax.js"></script>
 
@@ -301,27 +301,34 @@ longer need to config their credentials explicitly.</p>
 language-neutral way, it uses generic terminology which may be imprecise or
 inappropriate in certain languages or environments.</p>
 <h2 id="guidance">Guidance</h2>
-<p>This section describes the general guidance of supporting default credentials from Google virtual machine environments.</p>
+<p>This section describes the general guidance of supporting default credentials
+from Google virtual machine environments.</p>
 <h3 id="application-default-credentials">Application Default Credentials</h3>
 <p>Supporting the default credentials from Google virtual machines is considered as
-a part of the <a href="./4110">Application Default Credential</a>. To understand the overall credential flow, please read <a href="./4110">AIP-4110</a>.</p>
+a part of the <a href="./4110">Application Default Credential</a>. To understand the overall
+credential flow, please read <a href="./4110">AIP-4110</a>.</p>
 <h3 id="google-virtual-machine-environments">Google Virtual Machine Environments</h3>
-<p>There are typically two types of Google virtual machine environments where the auth library should obtain the identity token based on the environment type:</p>
+<p>There are typically two types of Google virtual machine environments where the
+auth library should obtain the identity token based on the environment type:</p>
 <ul>
-<li>Google App Engine Standard 1.0</li>
-<li>Compute Engine or equivalent runtime<ul>
+<li>Google App Engine Standard 1.0 Compute Engine or equivalent runtime<ul>
 <li>This typically includes Google App Engine Standard 2.0+ and Google App Engine Flex environments.</li>
 </ul>
 </li>
 </ul>
-<p>The auth library <strong>should</strong> depend on the <a href="https://cloud.google.com/appengine/downloads">Google App Engine SDK</a> to detect if the application is running within a Google App Engine environment.</p>
-<p>To detect if the application is running on Compute Engine environment, the auth library <strong>should</strong> depend on the <a href="https://developers.google.com/analytics/devguides/reporting/metadata/v3/libraries">Metadata Service Library</a>.</p>
+<p>The auth library <strong>should</strong> depend on the <a href="https://cloud.google.com/appengine/downloads">Google App Engine SDK</a> to detect
+if the application is running within a Google App Engine environment.</p>
+<p>To detect if the application is running on Compute Engine environment, the auth
+library <strong>should</strong> depend on the <a href="https://developers.google.com/analytics/devguides/reporting/metadata/v3/libraries">Metadata Service Library</a>.</p>
 <h3 id="compute-engine-or-equivalent-runtime">Compute Engine or Equivalent Runtime</h3>
-<p>If the application runs on a Compute Engine instance (or equivalent runtime), the auth library can request the following URL to get an access token associated with instance:</p>
+<p>If the application runs on a Compute Engine instance (or equivalent runtime),
+the auth library can request the following URL to get an access token associated
+with instance:</p>
 <div class="highlight language-"><pre><span></span><code>http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token
 </code></pre></div>
 
-<p>In response, the auth library will usually receive a token in the following JSON format:</p>
+<p>In response, the auth library will usually receive a token in the following JSON
+format:</p>
 <div class="highlight language-json"><pre><span></span><code><span class="p">{</span>
       <span class="nt">&quot;access_token&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_ACCESS_TOKEN&quot;</span><span class="p">,</span>
       <span class="nt">&quot;expires_in&quot;</span><span class="p">:</span><span class="mi">3599</span><span class="p">,</span>
@@ -329,10 +336,17 @@ a part of the <a href="./4110">Application Default Credential</a>. To understand
  <span class="p">}</span>
 </code></pre></div>
 
-<p><strong>Note:</strong> You can use the access token only for scopes that you specified when you created the instance. For example, if the instance has been granted only the https://www.googleapis.com/auth/storage-full scope for Cloud Storage, then it can't use the access token to make a request to BigQuery.</p>
+<p><strong>Note:</strong> You can use the access token only for scopes that you specified when
+you created the instance. For example, if the instance has been granted only the
+https://www.googleapis.com/auth/storage-full scope for Cloud Storage, then it
+can't use the access token to make a request to BigQuery.</p>
 <h3 id="google-app-engine-standard-10-runtime">Google App Engine Standard 1.0 Runtime</h3>
-<p>If the application runs on a App Engine Standard 1st generation instance, the auth library <strong>should</strong> rely on the <a href="https://cloud.google.com/appengine/downloads">Google App Engine SDK</a> to retrieve the access token. Here is <a href="https://godoc.org/google.golang.org/appengine#AccessToken">one example</a> in Go. Essentially the SDK relies on the underlying App Engine Identity service to generate the token.</p>
-<p>Unlike Compute Engine, the auth library can specify scopes when requesting the token in the App Engine Standard 1.0 runtime.</p>
+<p>If the application runs on a App Engine Standard 1st generation instance, the
+auth library <strong>should</strong> rely on the <a href="https://cloud.google.com/appengine/downloads">Google App Engine SDK</a> to retrieve the
+access token. Here is <a href="https://godoc.org/google.golang.org/appengine#AccessToken">one example</a> in Go. Essentially the SDK relies on the
+underlying App Engine Identity service to generate the token.</p>
+<p>Unlike Compute Engine, the auth library can specify scopes when requesting the
+token in the App Engine Standard 1.0 runtime.</p>
 <p>Sample code of getting the access token in Go:</p>
 <div class="highlight language-go"><pre><span></span><code><span class="kn">import</span> <span class="s">&quot;google.golang.org/appengine&quot;</span>
 <span class="o">...</span>
@@ -341,7 +355,8 @@ a part of the <a href="./4110">Application Default Credential</a>. To understand
 </code></pre></div>
 
 <h3 id="token-expiration">Token Expiration</h3>
-<p>The access tokens expire after a short period of time. The auth library <strong>must</strong> get a new token if the existing token expires.</p>
+<p>The access tokens expire after a short period of time. The auth library <strong>must</strong>
+get a new token if the existing token expires.</p>
 <!-- prettier-ignore-start -->
 
 <!-- prettier-ignore-end -->
