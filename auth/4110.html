@@ -8,8 +8,8 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=bd3b5f2d">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=bd3b5f2d">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=2d13d552">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=2d13d552">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,12 +18,12 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=bd3b5f2d"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=2d13d552"></script>
     
 <script type="text/javascript" src="/assets/js/proto-syntax.js"></script>
-<script type="text/javascript" src="/assets/js/graphviz/viz.js?v=bd3b5f2d"></script>
-<script type="text/javascript" src="/assets/js/graphviz/lite.render.js?v=bd3b5f2d"></script>
-<script type="text/javascript" src="/assets/js/aip/aip-graphviz.js?v=bd3b5f2d"></script>
+<script type="text/javascript" src="/assets/js/graphviz/viz.js?v=2d13d552"></script>
+<script type="text/javascript" src="/assets/js/graphviz/lite.render.js?v=2d13d552"></script>
+<script type="text/javascript" src="/assets/js/aip/aip-graphviz.js?v=2d13d552"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140054909-1"></script>
     <script>
@@ -382,7 +382,7 @@ implement these concepts in order to be considered complete.</p>
 
   check_env_var [ label=&quot;1. Check Environment Variables&quot; ];
   load_credentials [ label=&quot;2. Load Credentials&quot; ];
-  check_metadata [ label=&quot;3. Check Metadata Service Credentials&quot; ];
+  check_metadata [ label=&quot;3. Check Virtual Machine Credentials&quot; ];
   auth_flows [ label=&quot;4. Determine Auth Flows&quot; ];
   execute [ label=&quot;5. Execute Auth Flows&quot; ];
 
@@ -401,12 +401,12 @@ implement these concepts in order to be considered complete.</p>
 </ol>
 </li>
 <li><strong>Load credentials</strong><ol>
-<li>Check <a href="./4113.md">gcloud default credentials</a> through its default path
+<li>Check <a href="./4113">gcloud default credentials</a> through its default path
     1. If found go to step (2.2)
     1. Otherwise go to step (3)</li>
 <li>Check the provided credential type<ol>
 <li>If the credential is gcloud credentials, go to step (4)</li>
-<li>If the credential is <a href="./4112.md">a service account key</a> JSON, go to step (4)</li>
+<li>If the credential is <a href="./4112">a service account key</a> JSON, go to step (4)</li>
 <li>If the credential is unknown type, return an error saying that <em>[END]</em></li>
 </ol>
 </li>
@@ -414,7 +414,7 @@ implement these concepts in order to be considered complete.</p>
 </ol>
 </li>
 <li><strong>Check Google Virtual Machine Credentials</strong><ol>
-<li>If true, use the <a href="./4115.md">virtual machine flow</a> to get an access toke associated with the current environment <em>[END]</em></li>
+<li>If true, use the <a href="./4115">virtual machine flow</a> to get an access toke associated with the current environment <em>[END]</em></li>
 <li>If false, go to step (2.3)</li>
 </ol>
 </li>
@@ -431,7 +431,7 @@ implement these concepts in order to be considered complete.</p>
 </li>
 <li>Use self-signed JWT flow to create an access token locally.<ol>
 <li>If certificate is presented, embed the certificate into the JWT.</li>
-<li>Use the regular <a href="./4111.md">self-signed JWT flow</a> for an access token. <em>[END]</em></li>
+<li>Use the regular <a href="./4111">self-signed JWT flow</a> for an access token. <em>[END]</em></li>
 </ol>
 </li>
 <li>Use user identity flow to exchange for an access token. <em>[END]</em></li>
