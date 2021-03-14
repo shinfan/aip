@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" class="glue-flexbox">
   <head>
-    <title>AIP-4111: Self-signed JWT</title>
+    <title>AIP-4117: Google Unified Auth Clients (GUAC)</title>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
@@ -195,7 +195,7 @@
         Application Default Credentials
       </a>
     </li>
-    <li class="nav-item nav-item-active">
+    <li class="nav-item">
       <a href="/4111">
         <span class="aip-number">4111</span>
         Self-signed JWT
@@ -231,7 +231,7 @@
         Identity Tokens
       </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item nav-item-active">
       <a href="/4117">
         <span class="aip-number">4117</span>
         Google Unified Auth Clients (GUAC)
@@ -243,24 +243,32 @@
           
 <aside id="aip-sidebar" class="docs-component-sidebar">
   <table id="aip-summary">
-    <tr><th colspan="2">Self-signed JWT</th></tr>
-    <tr><td>Number</td><td>4111</td></tr>
-    <tr><td>Permalink</td><td><a href="https://google.aip.dev/auth/4111">google.aip.dev/auth/4111</a></td></tr>
+    <tr><th colspan="2">Google Unified Auth Clients (GUAC)</th></tr>
+    <tr><td>Number</td><td>4117</td></tr>
+    <tr><td>Permalink</td><td><a href="https://google.aip.dev/auth/4117">google.aip.dev/auth/4117</a></td></tr>
     <tr><td>Scope</td><td>Auth</td></tr>
-    <tr><td>State</td><td>Approved</td></tr>
-    <tr><td>Created</td><td>2020-07-23</td></tr>
-    <tr><td>Updated</td><td>2020-07-23</td></tr>
+    <tr><td>State</td><td>Draft</td></tr>
+    <tr><td>Created</td><td>2021-01-06</td></tr>
+    <tr><td>Updated</td><td>2021-01-06</td></tr>
   </table>
 
   <section id="aip-toc" class="docs-component-sidebar-toc">
     <div class="toc"><span class="toctitle">Contents</span><ul>
-<li><a href="#guidance">Guidance</a><ul>
-<li><a href="#application-default-credentials">Application Default Credentials</a></li>
-<li><a href="#default-authentication-method-for-service-account-keys">Default Authentication Method For Service Account Keys</a></li>
-<li><a href="#expected-behavior">Expected Behavior</a></li>
+<li><a href="#google-client-authentication">Google Client Authentication</a></li>
+<li><a href="#guac-vision">GUAC Vision</a></li>
+<li><a href="#guac-compatibility">GUAC Compatibility</a><ul>
+<li><a href="#guac-criteria-as-aips">GUAC criteria as AIPs</a></li>
+<li><a href="#guac-release-versions">GUAC Release Versions</a></li>
 </ul>
 </li>
-<li><a href="#changelog">Changelog</a></li>
+<li><a href="#current-release-v10">Current Release (v1.0)</a><ul>
+<li><a href="#release-theme">Release Theme</a></li>
+<li><a href="#aips">AIPs</a></li>
+<li><a href="#compatible-auth-libraries">Compatible Auth Libraries</a></li>
+</ul>
+</li>
+<li><a href="#release-history">Release History</a></li>
+<li><a href="#update-logs">Update Logs</a></li>
 </ul>
 </div>
 
@@ -269,8 +277,8 @@
   <section class="docs-component-sidebar-actions">
     <ul>
       <li><a href="https://github.com/aip-dev/google.aip.dev/issues/">File Bug</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/auth/4111.md">View source</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/auth/4111.md">Edit this page</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/auth/4117.md">View source</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/auth/4117.md">Edit this page</a></li>
     </ul>
   </section>
 </aside>
@@ -295,83 +303,117 @@
       
       <li class="glue-breadcrumbs__item glue-breadcrumbs__item--active"
           aria-level="3">
-        Self-signed JWT
+        Google Unified Auth Clients (GUAC)
       </li>
     </ol>
   </nav>
 </section>
-  
-  <h4 class="aip-number">AIP-4111</h4>
-  <h1>Self-signed JWT</h1>
-<p>Self-signed JWT (JSON Web Token) for Google APIs was introduced in 2014 to
-provide a more efficient auth stack for Cloud APIs being accessed via service
-accounts by bypassing the intermediate step of exchanging client assertions for
-OAuth tokens. A self-signed JWT is a spec-conforming JWT that is locally signed
-by the service account private key. Since many Cloud APIs accept self-signed JWT
-in place of traditional access tokens, it is now considered a standard
-authentication method.</p>
-<p><strong>Note:</strong> Because this AIP describes guidance and requirements in a
-language-neutral way, it uses generic terminology which may be imprecise or
-inappropriate in certain languages or environments.</p>
-<h2 id="guidance">Guidance</h2>
-<p>This section describes the general guidance of supporting self-signed
-JWT as a means of authentication.</p>
-<h3 id="application-default-credentials">Application Default Credentials</h3>
-<p>Supporting self-signed JWT is considered a part of <a href="https://google.aip.dev/auth/4112">application default
-credentials</a>. To understand the overall flow, please read <a href="https://google.aip.dev/auth/4112">AIP-4110</a>.</p>
-<h3 id="default-authentication-method-for-service-account-keys">Default Authentication Method For Service Account Keys</h3>
-<p>Considering its efficiency (bypassing the exchanging step), <a href="https://google.aip.dev/auth/4110">ADC</a> <strong>should</strong>
-use self-signed JWT as the default authentication flow when service account
-key is provided as the source credential.</p>
-<p>In other words, <a href="https://google.aip.dev/auth/4110">ADC</a> <strong>should</strong> choose the OAuth flow over the self-signed
-JWT flow only if the scope is explicitly provided to the auth library.</p>
-<h3 id="expected-behavior">Expected Behavior</h3>
-<p>To support self-signed JWT, the auth libraries <strong>must</strong> follow the steps below:</p>
-<p>1. Load the <a href="https://google.aip.dev/auth/4112">service account ID JSON file</a>. Please note that the self-signed
-JWT only supports service account ID credential type.</p>
-<p>2. Using any standard JWT library, such as one found at <a href="https://jwt.io/#libraries-io">jwt.io</a>, create a JWT
-with a header and payload like the following example:</p>
-<div class="highlight language-json"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;RS256&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;typ&quot;</span><span class="p">:</span> <span class="s2">&quot;JWT&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;abcdef1234567890&quot;</span>
-<span class="p">}</span>
-<span class="p">{</span>
-  <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;123456-compute@developer.gserviceaccount.com&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;123456-compute@developer.gserviceaccount.com&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;aud&quot;</span><span class="p">:</span> <span class="s2">&quot;https://firestore.googleapis.com/&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;iat&quot;</span><span class="p">:</span> <span class="mi">1511900000</span><span class="p">,</span>
-  <span class="nt">&quot;exp&quot;</span><span class="p">:</span> <span class="mi">1511903600</span>
-<span class="p">}</span>
-</code></pre></div>
+  <p id="aip-state-banner" class="callout warning">
+  This AIP is currently a draft. This means that it is being actively debated
+  and discussed, and it may change in non-trivial ways.
+</p>
+  <h4 class="aip-number">AIP-4117</h4>
+  <h1>Google Unified Auth Clients (GUAC)</h1>
+<p>"Google Universal Authentication Clients (also known as GUAC)" is a initiative
+that provides a unified future-proof solution for client authentication to
+access Google APIs. More specifically, GUAC initiative aims to continuously
+modernize client authentication with an expanding set of Auth AIPs.</p>
+<h2 id="google-client-authentication">Google Client Authentication</h2>
+<p>Google publishes hundreds of external APIs and most developers rely on Google's
+clients or toolings to access these APIs. To access a Google API, the client
+<strong>must</strong> identify the application to the server, and if the API requires
+authentication, the client <strong>must</strong> also identify the principal running the
+application. The functionalities in clients that offer such identification is
+considered as Google client authentication methods, and each method requires
+some form of credentials or certificates.</p>
+<p>In today’s world, with the increasing demand of authentication requirements from
+our customers, the authentication has evolved rapidly for our clients and
+tooling. These evolvements have increased the complexities significantly in
+the space, and thus introduced several new challenges such as scalability and
+consistency. GUAC is the initiative that aims to solve these new challenges,
+reduce the noise in the client authentication space, and deliver the best
+developer experience for our customers.</p>
+<h2 id="guac-vision">GUAC Vision</h2>
+<p>GUAC aims to provide the following improvements for Google client
+authentication:</p>
 <ul>
-<li>
-<p>For the <code>kid</code> field in the header, specify the service account's private key
-ID. You can find this value in the <code>private_key_id</code> field of the service account
-JSON file.</p>
-</li>
-<li>
-<p>For the <code>iss</code> and <code>sub</code> fields, specify the service account's email address.
-You can find this value in the <code>client_email</code> field of the service account JSON
-file.</p>
-</li>
-<li>
-<p>For the <code>aud</code> field, specify the audience. The default audience value
-<strong>should</strong> be <code>https://[API_ENDPOINT]/</code>. (e.g. <code>https://pubsub.googleapis.com/</code>)</p>
-</li>
-<li>
-<p>For the <code>iat</code> field, specify the current Unix time, and for the <code>exp</code> field,
-the value <strong>must</strong> be exactly 3600 seconds later, when the JWT will expire.</p>
-</li>
+<li>Consistent specification and implementation across languages via <a href="https://google.aip.dev/auth">AIPs</a></li>
+<li>Seamless developer exeprience through <a href="./4110.md">ADC</a></li>
+<li>Unified auth solution for Google clients and tooling</li>
+<li>Industry leading security features for both individual and enterprise
+  customers</li>
 </ul>
-<p>3. Sign the JWT with RSA-256 using the private key found in the service
-account JSON file.</p>
-<h2 id="changelog">Changelog</h2>
+<h2 id="guac-compatibility">GUAC Compatibility</h2>
+<p>The auth libraries that meets the criteria of GUAC <strong>should</strong> be considered as
+GUAC-compatible. The clients and toolings that depend on GUAC-compatible as
+their authentication stack <strong>should</strong> also be considered as GUAC-compatible.</p>
+<h3 id="guac-criteria-as-aips">GUAC criteria as AIPs</h3>
+<p>A set of AIPs are used to define the requirements for each GUAC version. The
+libraries <strong>must</strong> be consistent with these AIPs to be considered as
+GUAC-compatible of that specific GUAC version.</p>
+<h3 id="guac-release-versions">GUAC Release Versions</h3>
+<p>GUAC is versioned. The initial version of GUAC is 1.0 which contains a basic set
+of AIPs that provides the core functionalities of Google client authentication.
+After the initial version, the future new major versions <strong>should</strong> come with
+new AIPs that are backwards compatible with previous versions.</p>
+<h2 id="current-release-v10">Current Release (v1.0)</h2>
+<p>Currently we are working on the initial release of GUAC (v1.0).</p>
+<h3 id="release-theme">Release Theme</h3>
+<p>Unifying GCP core client authentication</p>
+<h3 id="aips">AIPs</h3>
+<p>The following AIPs are supported in this release:</p>
 <ul>
-<li><strong>2019-08-13</strong>: Add a section for application default credential.</li>
+<li>[AIP-4110] Application Default Credentials</li>
+<li>[AIP-4111] Self-signed JWT Access Token</li>
+<li>[AIP-4112] Service Account Keys [AIP-4113] Gcloud CLI Integration</li>
+<li>[AIP-4115] Default Credentials From Google Virtual Machines</li>
+<li>[AIP-4116] Identity Tokens</li>
 </ul>
-<!-- prettier-ignore-start -->
-<!-- prettier-ignore-end -->
+<h3 id="compatible-auth-libraries">Compatible Auth Libraries</h3>
+<p>The following auth libraries are considered GUAC compatible with current release
+(v1.0):</p>
+<table>
+<thead>
+<tr>
+<th>Auth Library</th>
+<th>Minimum Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>google-auth-library-java</td>
+<td>1.0.0</td>
+</tr>
+<tr>
+<td>google-auth-library-python</td>
+<td>1.28.0</td>
+</tr>
+<tr>
+<td>google-api-go-client</td>
+<td>1.0.0</td>
+</tr>
+<tr>
+<td>google-auth-library-php</td>
+<td>1.15.0</td>
+</tr>
+<tr>
+<td>google-auth-library-nodejs</td>
+<td>7.0.2</td>
+</tr>
+<tr>
+<td>google-auth-library-ruby</td>
+<td>1.0.0</td>
+</tr>
+<tr>
+<td>gax-dotnet</td>
+<td>3.2.0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="release-history">Release History</h2>
+<p>There is no past releases for GUAC yet.</p>
+<h2 id="update-logs">Update Logs</h2>
+<p>[2021-03-14] Initial draft.</p>
   <footer>
   Except as otherwise noted, the content of this page is licensed under the
   <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons
