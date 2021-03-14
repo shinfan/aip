@@ -8,8 +8,8 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=2d13d552">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=2d13d552">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=2e9b9077">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=2e9b9077">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,9 +18,9 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=2d13d552"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=2e9b9077"></script>
     
-<script type="text/javascript" src="/assets/js/proto-syntax.js"></script>
+<script type="text/javascript" src="/assets/js/syntax.js"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140054909-1"></script>
     <script>
@@ -112,7 +112,7 @@
           </button>
           </form>
         </div>
-        <a href="https://google.aip.dev" class="glue-button glue-button--high-emphasis">
+        <a href="https://github.com/aip-dev/google.aip.dev" target="_blank" class="glue-button glue-button--high-emphasis">
           <img src="/assets/images/github.png" class="github-logo">
           View on GitHub
         </a>
@@ -256,6 +256,12 @@
       </a>
     </li>
     <li class="nav-item">
+      <a href="/128">
+        <span class="aip-number">128</span>
+        Declarative-friendly interfaces
+      </a>
+    </li>
+    <li class="nav-item">
       <a href="/131">
         <span class="aip-number">131</span>
         Standard methods: Get
@@ -340,6 +346,18 @@
       </a>
     </li>
     <li class="nav-item">
+      <a href="/148">
+        <span class="aip-number">148</span>
+        Standard fields
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/149">
+        <span class="aip-number">149</span>
+        Unset field values
+      </a>
+    </li>
+    <li class="nav-item">
       <a href="/151">
         <span class="aip-number">151</span>
         Long-running operations
@@ -409,6 +427,12 @@
       <a href="/163">
         <span class="aip-number">163</span>
         Change validation
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/164">
+        <span class="aip-number">164</span>
+        Soft delete
       </a>
     </li>
     <li class="nav-item">
@@ -609,7 +633,11 @@ pagination to an existing method.</p>
 <span class="kd">message</span> <span class="nc">ListBooksRequest</span> <span class="p">{</span>
   <span class="c1">// The parent, which owns this collection of books.</span>
   <span class="c1">// Format: publishers/{publisher}</span>
-  <span class="kt">string</span> <span class="na">parent</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="kt">string</span> <span class="na">parent</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">google.api.field_behavior</span><span class="p">)</span> <span class="o">=</span> <span class="n">REQUIRED</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">google.api.resource_reference</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="n">child_type</span><span class="o">:</span> <span class="s">&quot;library.googleapis.com/Book&quot;</span>
+    <span class="p">}];</span>
 
   <span class="c1">// The maximum number of books to return. The service may return fewer than</span>
   <span class="c1">// this value.</span>
@@ -635,7 +663,6 @@ pagination to an existing method.</p>
   <span class="kt">string</span> <span class="na">next_page_token</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <ul>
 <li>Request messages for collections <strong>should</strong> define an <code>int32 page_size</code>
   field, allowing users to specify the maximum number of results to return.<ul>
@@ -659,6 +686,7 @@ pagination to an existing method.</p>
   error.</li>
 </ul>
 </li>
+<li>The response <strong>must not</strong> be a streaming response.</li>
 <li>Response messages for collections <strong>should</strong> define a
   <code>string next_page_token</code> field, providing the user with a page token that may
   be used to retrieve the next page.<ul>
@@ -692,9 +720,10 @@ contain sensitive data, an API <strong>may</strong> obfuscate the page token by 
 internal protocol buffer message with any data needed, and send the serialized
 proto, base-64 encoded.</p>
 <p>Page tokens <strong>must</strong> be limited to providing an indication of where to continue
-the pagination process only. They <strong>must not</strong> provide any form of authorization
-to the underlying resources, and authorization <strong>must</strong> be performed on the request
-as with any other regardless of the presence of a page token.</p>
+the pagination process only. They <strong>must not</strong> provide any form of
+authorization to the underlying resources, and authorization <strong>must</strong> be
+performed on the request as with any other regardless of the presence of a page
+token.</p>
 <h3 id="expiring-page-tokens">Expiring page tokens</h3>
 <p>Many APIs store page tokens in a database internally. In this situation, APIs
 <strong>may</strong> expire page tokens a reasonable time after they have been sent, in
@@ -721,6 +750,7 @@ value. Implementing an in-memory version (which might fetch everything then
 paginate) is reasonable for initially-small collections.</p>
 <h2 id="changelog">Changelog</h2>
 <ul>
+<li><strong>2020-08-24</strong>: Clarified that responses are not streaming responses.</li>
 <li><strong>2020-06-24</strong>: Clarified that page size is always optional for users.</li>
 <li><strong>2019-02-12</strong>: Added guidance on the field being paginated over.</li>
 <li><strong>2019-08-01</strong>: Changed the examples from "shelves" to "publishers", to

@@ -8,8 +8,8 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=2d13d552">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=2d13d552">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=2e9b9077">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=2e9b9077">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,9 +18,9 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=2d13d552"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=2e9b9077"></script>
     
-<script type="text/javascript" src="/assets/js/proto-syntax.js"></script>
+<script type="text/javascript" src="/assets/js/syntax.js"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140054909-1"></script>
     <script>
@@ -112,7 +112,7 @@
           </button>
           </form>
         </div>
-        <a href="https://google.aip.dev" class="glue-button glue-button--high-emphasis">
+        <a href="https://github.com/aip-dev/google.aip.dev" target="_blank" class="glue-button glue-button--high-emphasis">
           <img src="/assets/images/github.png" class="github-logo">
           View on GitHub
         </a>
@@ -256,6 +256,12 @@
       </a>
     </li>
     <li class="nav-item">
+      <a href="/128">
+        <span class="aip-number">128</span>
+        Declarative-friendly interfaces
+      </a>
+    </li>
+    <li class="nav-item">
       <a href="/131">
         <span class="aip-number">131</span>
         Standard methods: Get
@@ -340,6 +346,18 @@
       </a>
     </li>
     <li class="nav-item">
+      <a href="/148">
+        <span class="aip-number">148</span>
+        Standard fields
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/149">
+        <span class="aip-number">149</span>
+        Unset field values
+      </a>
+    </li>
+    <li class="nav-item">
       <a href="/151">
         <span class="aip-number">151</span>
         Long-running operations
@@ -409,6 +427,12 @@
       <a href="/163">
         <span class="aip-number">163</span>
         Change validation
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/164">
+        <span class="aip-number">164</span>
+        Soft delete
       </a>
     </li>
     <li class="nav-item">
@@ -624,7 +648,7 @@ when there is a large resource structure that would require a long series of
 non-breaking change, but moving existing fields into or out of a <code>oneof</code> is
 breaking (it creates a backwards-incompatible change in Go protobuf stubs).</p>
 <h3 id="maps">Maps</h3>
-<p>Maps <strong>may</strong> be used in situations where a situation where many values <em>of the
+<p>Maps <strong>may</strong> be used in situations where many values <em>of the
 same type</em> are needed, but the keys are unknown or user-determined.</p>
 <p>Maps are usually not appropriate for generic fields because the map values all
 share a type, but occasionally they are useful. In particular, a map can
@@ -632,7 +656,7 @@ sometimes be suited to a situation where many objects of the same type are
 needed, with different behavior based on the names of their keys (for example,
 using keys as environment names).</p>
 <h3 id="struct">Struct</h3>
-<p>The [<code>google.protobuf.Struct</code>][] object <strong>may</strong> be used to represent arbitrary
+<p>The <a href="https://github.com/protocolbuffers/protobuf/tree/master/src/google/protobuf/struct.proto"><code>google.protobuf.Struct</code></a> object <strong>may</strong> be used to represent arbitrary
 nested JSON. Keys can be strings, and values can be floats, strings, booleans,
 arrays, or additional nested structs, allowing for an arbitrarily nested
 structure that can be represented as JSON (and is automatically represented as
@@ -646,7 +670,7 @@ of choice.</p>
 use <a href="https://json-schema.org/">JSONSchema</a> for this purpose. Because JSONSchema is itself JSON, a valid
 JSONSchema document can itself be stored in a <code>Struct</code>.</p>
 <h3 id="any">Any</h3>
-<p>The [<code>google.protobuf.Any</code>][] object can be used to send an arbitrary
+<p>The <a href="https://github.com/protocolbuffers/protobuf/tree/master/src/google/protobuf/any.proto"><code>google.protobuf.Any</code></a> object can be used to send an arbitrary
 serialized protocol buffer and a type definition.</p>
 <p>However, this introduces complexity, because an <code>Any</code> becomes useless for any
 task other than blind data propagation if the consumer does not have access to
@@ -656,7 +680,6 @@ which is an often-unfamiliar process.</p>
 <p>Because of this, <code>Any</code> <strong>should not</strong> be used unless other options are
 infeasible.</p>
 <!-- prettier-ignore-start -->
-
 <!-- prettier-ignore-end -->
   <footer>
   Except as otherwise noted, the content of this page is licensed under the
