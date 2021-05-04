@@ -8,8 +8,8 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=4bb1af75">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=4bb1af75">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=bc4ab8cb">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=bc4ab8cb">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,9 +18,9 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=4bb1af75"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=bc4ab8cb"></script>
     
-<script type="text/javascript" src="/assets/js/syntax.js"></script>
+<script type="text/javascript" src="/assets/js/proto-syntax.js"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140054909-1"></script>
     <script>
@@ -112,7 +112,7 @@
           </button>
           </form>
         </div>
-        <a href="https://github.com/aip-dev/google.aip.dev" target="_blank" class="glue-button glue-button--high-emphasis">
+        <a href="https://google.aip.dev" class="glue-button glue-button--high-emphasis">
           <img src="/assets/images/github.png" class="github-logo">
           View on GitHub
         </a>
@@ -256,12 +256,6 @@
       </a>
     </li>
     <li class="nav-item">
-      <a href="/128">
-        <span class="aip-number">128</span>
-        Declarative-friendly interfaces
-      </a>
-    </li>
-    <li class="nav-item">
       <a href="/131">
         <span class="aip-number">131</span>
         Standard methods: Get
@@ -346,18 +340,6 @@
       </a>
     </li>
     <li class="nav-item">
-      <a href="/148">
-        <span class="aip-number">148</span>
-        Standard fields
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="/149">
-        <span class="aip-number">149</span>
-        Unset field values
-      </a>
-    </li>
-    <li class="nav-item">
       <a href="/151">
         <span class="aip-number">151</span>
         Long-running operations
@@ -427,12 +409,6 @@
       <a href="/163">
         <span class="aip-number">163</span>
         Change validation
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="/164">
-        <span class="aip-number">164</span>
-        Soft delete
       </a>
     </li>
     <li class="nav-item">
@@ -644,6 +620,7 @@ changes to the resources without causing side effects.</p>
   <span class="k">option</span> <span class="p">(</span><span class="n">google.api.method_signature</span><span class="p">)</span> <span class="o">=</span> <span class="s">&quot;book,update_mask&quot;</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
+
 <ul>
 <li>The RPC's name <strong>must</strong> begin with the word <code>Update</code>. The remainder of the
   RPC name <strong>should</strong> be the singular form of the resource's message name.</li>
@@ -694,10 +671,11 @@ separator, <code>snake_case</code> is used.</p>
   <span class="n">google.protobuf.FieldMask</span> <span class="na">update_mask</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
+
 <ul>
 <li>The request message <strong>must</strong> contain a field for the resource.<ul>
 <li>The field <strong>must</strong> map to the <code>PATCH</code> body.</li>
-<li>The field <strong>should</strong> be <a href="/203">annotated as required</a>.</li>
+<li>The field <strong>should</strong> be annotated as required.</li>
 <li>A <code>name</code> field <strong>must</strong> be included in the resource message. It <strong>should</strong>
   be called <code>name</code>.</li>
 </ul>
@@ -707,12 +685,8 @@ separator, <code>snake_case</code> is used.</p>
   <code>update_mask</code>.<ul>
 <li>The fields used in the field mask correspond to the resource being updated
   (not the request message).</li>
-<li>The field <strong>may</strong> be required or optional. If it is required, it <strong>must</strong>
-  include the corresponding annotation. If optional, the service <strong>must</strong>
-  treat an omitted field mask as an implied field mask equivalent to all
-  fields that are set on the wire.</li>
-<li>Update masks <strong>must</strong> support a special value <code>*</code>, meaning full replacement
-  (the equivalent of <code>PUT</code>).</li>
+<li>The field <strong>may</strong> be required or optional. If it is required, it <strong>should</strong>
+  include the corresponding annotation.</li>
 </ul>
 </li>
 <li>The request message <strong>must not</strong> contain any other required fields, and
@@ -746,6 +720,7 @@ add <code>rating</code>):</p>
   <span class="kt">int32</span> <span class="na">rating</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
+
 <p>If a rating is set on a book and the existing <code>PUT</code> request was executed, it
 would wipe out the book's rating. In essence, a <code>PUT</code> request unintentionally
 wiped out data because the previous version did not know about it.</p>
@@ -760,54 +735,23 @@ operation (<a href="/151">AIP-151</a>) instead:</p>
   <span class="k">option</span> <span class="p">(</span><span class="n">google.longrunning.operation_info</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">response_type</span><span class="o">:</span> <span class="s">&quot;Book&quot;</span>
     <span class="n">metadata_type</span><span class="o">:</span> <span class="s">&quot;OperationMetadata&quot;</span>
-  <span class="p">};</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
+
 <ul>
 <li>The response type <strong>must</strong> be set to the resource (what the return type would
   be if the RPC was not long-running).</li>
 <li>Both the <code>response_type</code> and <code>metadata_type</code> fields <strong>must</strong> be specified.</li>
 </ul>
-<p><strong>Note:</strong> Declarative-friendly resources (<a href="/128">AIP-128</a>) <strong>should</strong> use long-running
-update.</p>
 <h3 id="create-or-update">Create or update</h3>
-<p>[^reviewing]</p>
-<p>If the service uses client-assigned resource names, <code>Update</code> methods <strong>may</strong>
-expose a <code>bool allow_missing</code> field, which will cause the method to succeed in
-the event that the user attempts to update a resource that is not present (and
-will create the resource in the process):</p>
-<div class="highlight language-proto"><pre><span></span><code><span class="kd">message</span> <span class="nc">UpdateBookRequest</span> <span class="p">{</span>
-  <span class="c1">// The book to update.</span>
-  <span class="c1">//</span>
-  <span class="c1">// The book&#39;s `name` field is used to identify the book to be updated.</span>
-  <span class="c1">// Format: publishers/{publisher}/books/{book}</span>
-  <span class="n">Book</span> <span class="na">book</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">[(</span><span class="n">google.api.field_behavior</span><span class="p">)</span> <span class="o">=</span> <span class="n">REQUIRED</span><span class="p">];</span>
-
-  <span class="c1">// The list of fields to be updated.</span>
-  <span class="n">google.protobuf.FieldMask</span> <span class="na">update_mask</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-
-  <span class="c1">// If set to true, and the book is not found, a new book will be created.</span>
-  <span class="c1">// In this situation, `update_mask` is ignored.</span>
-  <span class="kt">bool</span> <span class="na">allow_missing</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>More specifically, the <code>allow_missing</code> flag triggers the following behavior:</p>
-<ul>
-<li>If the method call is on a resource that does not exist, the resource is
-  created. All fields are applied regardless of any provided field mask.<ul>
-<li>However, if any required fields are missing or fields have invalid values,
-  an <code>INVALID_ARGUMENT</code> error is returned.</li>
-</ul>
-</li>
-<li>If the method call is on a resource that already exists, and all fields
-  match, the existing resource is returned unchanged.</li>
-<li>If the method call is on a resource that already exists, only fields declared
-  in the field mask are updated.</li>
-</ul>
-<p>The user must have <em>both</em> the create and update permissions to call <code>Update</code>
-with <code>allow_missing</code> set to <code>true</code>.</p>
-<p><strong>Note:</strong> Declarative-friendly resources (<a href="/128">AIP-128</a>) <strong>must</strong> expose the
-<code>bool allow_missing</code> field.</p>
+<p>If the API accepts client-assigned resource names, the server <strong>may</strong> allow the
+client to specify a non-existent resource name and create a new resource
+(effectively implementing the "upsert" concept). Otherwise, the Update method
+<strong>should</strong> fail with <code>NOT_FOUND</code>.</p>
+<p>An API with an update method that supports resource creation <strong>should</strong> also
+provide a <a href="/133">create</a> method, because otherwise it may not be clear to users how
+to create resources.</p>
 <h3 id="etags">Etags</h3>
 <p>An API may sometimes need to allow users to send update requests which are
 guaranteed to be made against the most current data (a common use case for this
@@ -833,11 +777,12 @@ server-computed value representing the content of the resource.</p>
   <span class="kt">string</span> <span class="na">etag</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
+
 <p>The <code>etag</code> field <strong>may</strong> be either <a href="/203#required">required</a> or <a href="/203#optional">optional</a>. If it is set,
 then the request <strong>must</strong> succeed if and only if the provided etag matches the
-server-computed value, and <strong>must</strong> fail with an <code>ABORTED</code> error otherwise. The
-<code>update_mask</code> field in the request does not affect the behavior of the <code>etag</code>
-field, as it is not a field <em>being</em> updated.</p>
+server-computed value, and <strong>must</strong> fail with a <code>FAILED_PRECONDITION</code> error
+otherwise. The <code>update_mask</code> field in the request does not affect the behavior
+of the <code>etag</code> field, as it is not a field <em>being</em> updated.</p>
 <h3 id="expensive-fields">Expensive fields</h3>
 <p>APIs sometimes encounter situations where some fields on a resource are
 expensive or impossible to reliably return.</p>
@@ -860,15 +805,11 @@ whether or not it exists, the service <strong>must</strong> error with <code>PER
 exists.</p>
 <h2 id="changelog">Changelog</h2>
 <ul>
-<li><strong>2021-03-05</strong>: Changed the etag error from <code>FAILED_PRECONDITION</code> (which
-  becomes HTTP 400) to <code>ABORTED</code> (409).</li>
-<li><strong>2020-10-06</strong>: Added guidance for declarative-friendly resources.</li>
-<li><strong>2020-10-06</strong>: Added guidance for <code>allow_missing</code>.</li>
 <li><strong>2020-08-14</strong>: Added error guidance for permission denied cases.</li>
 <li><strong>2020-06-08</strong>: Added guidance on returning the full resource.</li>
 <li><strong>2019-10-18</strong>: Added guidance on annotations.</li>
 <li><strong>2019-09-10</strong>: Added a link to the long-running operations AIP
-  ([AIP-151][]).</li>
+  (<a href="/151">AIP-151</a>).</li>
 <li><strong>2019-08-01</strong>: Changed the examples from "shelves" to "publishers", to
   present a better example of resource ownership.</li>
 <li><strong>2019-06-10</strong>: Added guidance for long-running update.</li>

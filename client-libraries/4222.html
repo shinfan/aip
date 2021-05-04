@@ -8,8 +8,8 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=4bb1af75">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=4bb1af75">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=bc4ab8cb">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=bc4ab8cb">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,9 +18,9 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=4bb1af75"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=bc4ab8cb"></script>
     
-<script type="text/javascript" src="/assets/js/syntax.js"></script>
+<script type="text/javascript" src="/assets/js/proto-syntax.js"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140054909-1"></script>
     <script>
@@ -112,7 +112,7 @@
           </button>
           </form>
         </div>
-        <a href="https://github.com/aip-dev/google.aip.dev" target="_blank" class="glue-button glue-button--high-emphasis">
+        <a href="https://google.aip.dev" class="glue-button glue-button--high-emphasis">
           <img src="/assets/images/github.png" class="github-logo">
           View on GitHub
         </a>
@@ -297,14 +297,15 @@ efficiently if it knows about some values in the request; however, the request
 payload can not be reasonably deconstructed on the wire to perform that
 routing.</p>
 <h2 id="guidance">Guidance</h2>
-<p>Code generators <strong>should</strong> look at URI-based variables declared in the
+<p>Code generators <strong>should</strong> look at URL-based variables declared in the
 <a href="https://github.com/googleapis/api-common-protos/blob/master/google/api/http.proto"><code>google.api.http</code></a> annotation and transcribe these into the
-<code>x-goog-request-params</code> header in unary calls. A URI-based variable is a
+<code>x-goog-request-params</code> header in unary calls. A URL-based variable is a
 variable declared as a key in curly braces in the URI string. For example:</p>
 <div class="highlight language-proto"><pre><span></span><code><span class="k">rpc</span> <span class="n">CreateTopic</span><span class="p">(</span><span class="n">CreateTopicRequest</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">option</span> <span class="p">(</span><span class="n">google.api.http</span><span class="p">)</span><span class="o">.</span><span class="na">post</span> <span class="o">=</span> <span class="s">&quot;{parent=projects/*}/topics&quot;</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
+
 <p><strong>Note:</strong> the ommission of a path segment in the variable template, <code>{parent}</code>
 for example, is equivalent to <code>{parent=*}</code> and <strong>should</strong> be parsed.</p>
 <p>In this case, the applicable variable is <code>parent</code>, and it refers to the
@@ -318,6 +319,7 @@ request in Go:</p>
 <div class="highlight language-go"><pre><span></span><code><span class="nx">md</span> <span class="o">:=</span> <span class="nx">metadata</span><span class="p">.</span><span class="nx">Pairs</span><span class="p">(</span><span class="s">&quot;x-goog-request-params&quot;</span><span class="p">,</span>
   <span class="nx">url</span><span class="p">.</span><span class="nx">QueryEscape</span><span class="p">(</span><span class="s">&quot;parent&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;=&quot;</span> <span class="o">+</span> <span class="nx">url</span><span class="p">.</span><span class="nx">QueryEscape</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">GetParent</span><span class="p">()))</span>
 </code></pre></div>
+
 <p>Much like URL parameters, if there is more than one key-value pair, the <code>&amp;</code>
 character is used as the separator. At runtime, if a named parameter is unset
 on the request message, it <strong>should not</strong> be included in the headers.</p>
@@ -329,6 +331,7 @@ be included in request parameters, encoded in the same way.</p>
 key in any of the standard fields (<code>get</code>, <code>post</code>, <code>put</code>, <code>patch</code>, <code>delete</code>) on
 the <a href="https://github.com/googleapis/api-common-protos/blob/master/google/api/http.proto"><code>google.api.http</code></a> annotation is sufficient.</p>
 <!-- prettier-ignore -->
+
 <h2 id="changelog">Changelog</h2>
 <ul>
 <li><strong>2020-04-21</strong>: Explicitly parse path variables missing a trailing segment.</li>
