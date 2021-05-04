@@ -8,8 +8,8 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=ca9eed53">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=ca9eed53">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=877e3546">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=877e3546">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,9 +18,9 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=ca9eed53"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=877e3546"></script>
     
-<script type="text/javascript" src="/assets/js/proto-syntax.js"></script>
+<script type="text/javascript" src="/assets/js/syntax.js"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140054909-1"></script>
     <script>
@@ -112,7 +112,7 @@
           </button>
           </form>
         </div>
-        <a href="https://google.aip.dev" class="glue-button glue-button--high-emphasis">
+        <a href="https://github.com/aip-dev/google.aip.dev" target="_blank" class="glue-button glue-button--high-emphasis">
           <img src="/assets/images/github.png" class="github-logo">
           View on GitHub
         </a>
@@ -256,6 +256,12 @@
       </a>
     </li>
     <li class="nav-item">
+      <a href="/128">
+        <span class="aip-number">128</span>
+        Declarative-friendly interfaces
+      </a>
+    </li>
+    <li class="nav-item">
       <a href="/131">
         <span class="aip-number">131</span>
         Standard methods: Get
@@ -340,6 +346,18 @@
       </a>
     </li>
     <li class="nav-item">
+      <a href="/148">
+        <span class="aip-number">148</span>
+        Standard fields
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/149">
+        <span class="aip-number">149</span>
+        Unset field values
+      </a>
+    </li>
+    <li class="nav-item">
       <a href="/151">
         <span class="aip-number">151</span>
         Long-running operations
@@ -400,6 +418,12 @@
       </a>
     </li>
     <li class="nav-item">
+      <a href="/161">
+        <span class="aip-number">161</span>
+        Field masks
+      </a>
+    </li>
+    <li class="nav-item">
       <a href="/162">
         <span class="aip-number">162</span>
         Resource Revisions
@@ -409,6 +433,12 @@
       <a href="/163">
         <span class="aip-number">163</span>
         Change validation
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/164">
+        <span class="aip-number">164</span>
+        Soft delete
       </a>
     </li>
     <li class="nav-item">
@@ -475,6 +505,12 @@
       <a href="/210">
         <span class="aip-number">210</span>
         Unicode
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/211">
+        <span class="aip-number">211</span>
+        Authorization checks
       </a>
     </li>
     <li class="nav-item">
@@ -612,7 +648,7 @@ streaming.</p>
 using the <code>google.api.http</code> annotation:</p>
 <div class="highlight language-proto"><pre><span></span><code><span class="k">rpc</span> <span class="n">CreateBook</span><span class="p">(</span><span class="n">CreateBookRequest</span><span class="p">)</span> <span class="k">returns</span> <span class="p">(</span><span class="n">Book</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">option</span> <span class="p">(</span><span class="n">google.api.http</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">post</span><span class="o">:</span> <span class="s">&quot;/v1/{parent=publishers/*}/books/*&quot;</span>
+    <span class="n">post</span><span class="o">:</span> <span class="s">&quot;/v1/{parent=publishers/*}/books&quot;</span>
     <span class="n">body</span><span class="o">:</span> <span class="s">&quot;book&quot;</span>
   <span class="p">};</span>
 <span class="p">}</span>
@@ -621,12 +657,16 @@ using the <code>google.api.http</code> annotation:</p>
   <span class="c1">// The publisher who will publish this book.</span>
   <span class="c1">// When using HTTP/JSON, this field is automatically populated based</span>
   <span class="c1">// on the URI, because of the `{parent=publishers/*}` syntax.</span>
-  <span class="kt">string</span> <span class="na">parent</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="kt">string</span> <span class="na">parent</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">google.api.field_behavior</span><span class="p">)</span> <span class="o">=</span> <span class="n">REQUIRED</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">google.api.resource_reference</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="n">child_type</span><span class="o">:</span> <span class="s">&quot;library.googleapis.com/Book&quot;</span>
+    <span class="p">}];</span>
 
   <span class="c1">// The book to create.</span>
   <span class="c1">// When using HTTP/JSON, this field is populated based on the HTTP body,</span>
   <span class="c1">// because of the `body: &quot;book&quot;` syntax.</span>
-  <span class="n">Book</span> <span class="na">book</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="n">Book</span> <span class="na">book</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">[(</span><span class="n">google.api.field_behavior</span><span class="p">)</span> <span class="o">=</span> <span class="n">REQUIRED</span><span class="p">];</span>
 
   <span class="c1">// The user-specified ID for the book.</span>
   <span class="c1">// When using HTTP/JSON, this field is populated based on a query string</span>
@@ -635,7 +675,6 @@ using the <code>google.api.http</code> annotation:</p>
   <span class="kt">string</span> <span class="na">book_id</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <ul>
 <li>The first key (<code>post</code> in this example) corresponds to the HTTP method. RPCs
   <strong>may</strong> use <code>get</code>, <code>post</code>, <code>patch</code>, or <code>delete</code>.<ul>
@@ -652,20 +691,25 @@ using the <code>google.api.http</code> annotation:</p>
   should be populated in the request proto. When extracting a <a href="/122">resource
   name</a>, the variable <strong>must</strong> include the entire resource name, not
   just the ID component.</li>
+<li>URIs <strong>may</strong> use nested fields for their variable names. (Additionally,
+  <a href="/134">AIP-134</a> mandates this for <code>Update</code> requests.)</li>
 <li>URIs <strong>must</strong> use the <code>*</code> character to represent ID components, which
   matches all URI-safe characters except for <code>/</code>. URIs <strong>may</strong> use <code>**</code> as
   the final segment of a URI if matching <code>/</code> is required.</li>
 </ul>
 </li>
-<li>The <code>body</code> key defines which field in the request will be sent as the HTTP
-  body. If the body is <code>*</code>, then this indicates that the request object itself
-  is the HTTP body. The request body is encoded as JSON as defined by protocol
-  buffers' canonical <a href="https://developers.google.com/protocol-buffers/docs/proto3#json">JSON encoding</a>.<ul>
+<li>The <code>body</code> key defines which single top-level field in the request will be
+  sent as the HTTP body. If the body is <code>*</code>, then this indicates that the
+  request object itself is the HTTP body. The request body is encoded as JSON
+  as defined by protocol buffers' canonical <a href="https://developers.google.com/protocol-buffers/docs/proto3#json">JSON encoding</a>.<ul>
 <li>RPCs <strong>must not</strong> define a <code>body</code> at all for RPCs that use the <code>GET</code> or
   <code>DELETE</code> HTTP verbs.</li>
 <li>RPCs <strong>must</strong> use the prescribed <code>body</code> for Create (<a href="/133">AIP-133</a>) and Update
   (<a href="/134">AIP-134</a>) requests.</li>
 <li>RPCs <strong>should</strong> use the prescribed <code>body</code> for custom methods (<a href="/136">AIP-136</a>).</li>
+<li>The <code>body</code> <strong>must not</strong> contain a nested field (or use the <code>.</code> character),</li>
+<li>The <code>body</code> <strong>must not</strong> be the same as a URI parameter.</li>
+<li>The <code>body</code> <strong>must not</strong> be a <code>repeated</code> field.</li>
 <li>Fields <strong>should not</strong> use the <code>json_name</code> annotation to alter the field
   name in JSON, unless doing so for backwards-compatibility reasons.</li>
 </ul>
@@ -688,10 +732,9 @@ equivalent RPCs.</p>
       <span class="n">post</span><span class="o">:</span> <span class="s">&quot;/v1/books&quot;</span>
       <span class="n">body</span><span class="o">:</span> <span class="s">&quot;book&quot;</span>
     <span class="p">}</span>
-  <span class="p">}</span>
+  <span class="p">};</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <ul>
 <li>RPCs <strong>may</strong> define any number of additional bindings. The structure is
   identical to the <code>google.api.http</code> annotation (in fact, it is a recursive
@@ -702,11 +745,11 @@ equivalent RPCs.</p>
 </ul>
 <h2 id="changelog">Changelog</h2>
 <ul>
+<li><strong>2021-01-06</strong>: Added clarification around <code>body</code> and nested fields.</li>
 <li><strong>2019-09-23</strong>: Added a statement about request body encoding, and guidance
   discouraging <code>json_name</code>.</li>
 </ul>
 <!-- prettier-ignore-start -->
-
 <!-- prettier-ignore-end -->
   <footer>
   Except as otherwise noted, the content of this page is licensed under the

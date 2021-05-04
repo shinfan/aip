@@ -8,8 +8,8 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=ca9eed53">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=ca9eed53">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=877e3546">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=877e3546">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,9 +18,9 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=ca9eed53"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=877e3546"></script>
     
-<script type="text/javascript" src="/assets/js/proto-syntax.js"></script>
+<script type="text/javascript" src="/assets/js/syntax.js"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140054909-1"></script>
     <script>
@@ -112,7 +112,7 @@
           </button>
           </form>
         </div>
-        <a href="https://google.aip.dev" class="glue-button glue-button--high-emphasis">
+        <a href="https://github.com/aip-dev/google.aip.dev" target="_blank" class="glue-button glue-button--high-emphasis">
           <img src="/assets/images/github.png" class="github-logo">
           View on GitHub
         </a>
@@ -198,7 +198,7 @@
     <li class="nav-item">
       <a href="/4111">
         <span class="aip-number">4111</span>
-        Self-signed JWT-based Access Token
+        Self-signed JWT
       </a>
     </li>
     <li class="nav-item">
@@ -223,6 +223,12 @@
       <a href="/4115">
         <span class="aip-number">4115</span>
         Default Credentials From Google Virtual Machines
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/4116">
+        <span class="aip-number">4116</span>
+        Identity Tokens
       </a>
     </li>
     </ul>
@@ -324,9 +330,8 @@ library <strong>should</strong> depend on the <a href="https://developers.google
 <p>If the application runs on a Compute Engine instance (or equivalent runtime),
 the auth library can request the following URL to get an access token associated
 with instance:</p>
-<div class="highlight language-"><pre><span></span><code>http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token
+<div class="highlight language-None"><pre><span></span><code>http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token
 </code></pre></div>
-
 <p>In response, the auth library will usually receive a token in the following JSON
 format:</p>
 <div class="highlight language-json"><pre><span></span><code><span class="p">{</span>
@@ -335,11 +340,20 @@ format:</p>
       <span class="nt">&quot;token_type&quot;</span><span class="p">:</span><span class="s2">&quot;Bearer&quot;</span>
  <span class="p">}</span>
 </code></pre></div>
-
-<p><strong>Note:</strong> You can use the access token only for scopes that you specified when
-you created the instance. For example, if the instance has been granted only the
-https://www.googleapis.com/auth/storage-full scope for Cloud Storage, then it
-can't use the access token to make a request to BigQuery.</p>
+<h4>Scopes</h4>
+<p>Access tokens obtained from the metadata server contain the scopes specified at instance creation.
+For example, if an instance is granted only the
+https://www.googleapis.com/auth/storage-full scope for Cloud Storage, then the tokens obtained 
+from the instance's metadata server have only the <code>storage-full</code> scope.</p>
+<p>When running on GCE, the metadata server ignores requests for custom scopes.
+On Cloud Run and Workload Identity on Google Kubernetes Engine, clients can request a 
+different set of scopes to the metadata server using the <code>scopes</code> url parameter, e.g.:</p>
+<div class="highlight language-None"><pre><span></span><code>http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token?scopes=comma-separated-list-of-scopes
+</code></pre></div>
+<p>The auth library <strong>should</strong> allow the caller to optionally specify a list of custom scopes,
+and add the <code>scopes</code> parameter to the request when needed.
+Depending on the runtime environment, the request for custom scopes will be transparently
+ignored by the server (GCE) or fulfilled (Cloud Run and Workload Identity).</p>
 <h3 id="google-app-engine-standard-10-runtime">Google App Engine Standard 1.0 Runtime</h3>
 <p>If the application runs on a App Engine Standard 1st generation instance, the
 auth library <strong>should</strong> rely on the <a href="https://cloud.google.com/appengine/downloads">Google App Engine SDK</a> to retrieve the
@@ -353,12 +367,10 @@ token in the App Engine Standard 1.0 runtime.</p>
 <span class="nx">token</span><span class="p">,</span> <span class="nx">exp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">appengine</span><span class="p">.</span><span class="nx">AccessToken</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">scopes</span><span class="o">...</span><span class="p">)</span>
 <span class="o">...</span>
 </code></pre></div>
-
 <h3 id="token-expiration">Token Expiration</h3>
 <p>The access tokens expire after a short period of time. The auth library <strong>must</strong>
 get a new token if the existing token expires.</p>
 <!-- prettier-ignore-start -->
-
 <!-- prettier-ignore-end -->
   <footer>
   Except as otherwise noted, the content of this page is licensed under the
